@@ -3,6 +3,7 @@
 const { asyncHandler, successResponse } = require("../utils");
 const { UserService } = require("../services");
 const { HTTP_STATUS, MESSAGES } = require("../constants");
+const { BadRequestError } = require("../errors");
 
 const getMe = asyncHandler(async (req, res) => {
     const user = await UserService.findById(req.user.id);
@@ -12,7 +13,7 @@ const getMe = asyncHandler(async (req, res) => {
         HTTP_STATUS.OK,
         MESSAGES.SUCCESS.GENERAL.code,
         MESSAGES.SUCCESS.GENERAL.message,
-        user
+        user,
     );
 });
 
@@ -24,21 +25,25 @@ const updateMe = asyncHandler(async (req, res) => {
         HTTP_STATUS.OK,
         MESSAGES.SUCCESS.GENERAL.code,
         MESSAGES.SUCCESS.GENERAL.message,
-        updatedUser
+        updatedUser,
     );
 });
 
 const updateMyPassword = asyncHandler(async (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
-    const updatedUser = await UserService.updatePassword(req.user.id, oldPassword, newPassword);
+    const updatedUser = await UserService.updatePassword(
+        req.user.id,
+        oldPassword,
+        newPassword,
+    );
 
     return successResponse(
         res,
         HTTP_STATUS.OK,
         MESSAGES.SUCCESS.GENERAL.code,
         MESSAGES.SUCCESS.GENERAL.message,
-        updatedUser
+        updatedUser,
     );
 });
 
@@ -50,7 +55,7 @@ const getUserByUsername = asyncHandler(async (req, res) => {
         HTTP_STATUS.OK,
         MESSAGES.SUCCESS.GENERAL.code,
         MESSAGES.SUCCESS.GENERAL.message,
-        user
+        user,
     );
 });
 
@@ -62,7 +67,76 @@ const searchUsers = asyncHandler(async (req, res) => {
         HTTP_STATUS.OK,
         MESSAGES.SUCCESS.GENERAL.code,
         MESSAGES.SUCCESS.GENERAL.message,
-        users
+        users,
+    );
+});
+
+const updateAvatar = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        throw new BadRequestError();
+    }
+
+    const updatedUser = await UserService.updateAvatar(
+        req.user.id,
+        req.file.path,
+    );
+
+    return successResponse(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.SUCCESS.GENERAL.code,
+        MESSAGES.SUCCESS.GENERAL.message,
+        updatedUser,
+    );
+});
+
+const deleteAvatar = asyncHandler(async (req, res) => {
+    const updatedUser = await UserService.deleteAvatar(req.user.id);
+
+    return successResponse(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.SUCCESS.GENERAL.code,
+        MESSAGES.SUCCESS.GENERAL.message,
+        updatedUser,
+    );
+});
+
+const deleteMe = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+
+    await UserService.softDeleteById(userId);
+
+    return res.status(HTTP_STATUS.NO_CONTENT).end();
+});
+
+const blockUser = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const targetUserId = req.params.id;
+
+    const updatedUser = await UserService.blockUser(userId, targetUserId);
+
+    return successResponse(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.SUCCESS.GENERAL.code,
+        MESSAGES.SUCCESS.GENERAL.message,
+        updatedUser,
+    );
+});
+
+const unblockUser = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const targetUserId = req.params.id;
+
+    const updatedUser = await UserService.unblockUser(userId, targetUserId);
+
+    return successResponse(
+        res,
+        HTTP_STATUS.OK,
+        MESSAGES.SUCCESS.GENERAL.code,
+        MESSAGES.SUCCESS.GENERAL.message,
+        updatedUser,
     );
 });
 
@@ -72,4 +146,9 @@ module.exports = {
     updateMyPassword,
     getUserByUsername,
     searchUsers,
+    updateAvatar,
+    deleteAvatar,
+    deleteMe,
+    blockUser,
+    unblockUser,
 };

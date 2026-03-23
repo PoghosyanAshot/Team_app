@@ -2,7 +2,12 @@
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const { USER_STATUS, REGEX_PATTERNS, MESSAGES, VALIDATION_LIMITS } = require("../constants");
+const {
+    USER_STATUS,
+    REGEX_PATTERNS,
+    MESSAGES,
+    VALIDATION_LIMITS,
+} = require("../constants");
 
 const userSchema = new mongoose.Schema(
     {
@@ -19,7 +24,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, MESSAGES.VALIDATION.USER.LAST_NAME_REQUIRED],
             trim: true,
-            maxlength: [VALIDATION_LIMITS.USER.NAME_MAX, MESSAGES.VALIDATION.USER.LAST_NAME_LENGTH],
+            maxlength: [
+                VALIDATION_LIMITS.USER.NAME_MAX,
+                MESSAGES.VALIDATION.USER.LAST_NAME_LENGTH,
+            ],
         },
         username: {
             type: String,
@@ -35,7 +43,10 @@ const userSchema = new mongoose.Schema(
                 VALIDATION_LIMITS.USER.USERNAME_MAX,
                 MESSAGES.VALIDATION.USER.USERNAME_LENGTH,
             ],
-            match: [REGEX_PATTERNS.USERNAME, MESSAGES.VALIDATION.USER.USERNAME_INVALID],
+            match: [
+                REGEX_PATTERNS.USERNAME,
+                MESSAGES.VALIDATION.USER.USERNAME_INVALID,
+            ],
         },
         email: {
             type: String,
@@ -43,7 +54,10 @@ const userSchema = new mongoose.Schema(
             unique: true,
             lowercase: true,
             trim: true,
-            match: [REGEX_PATTERNS.EMAIL, MESSAGES.VALIDATION.USER.EMAIL_INVALID],
+            match: [
+                REGEX_PATTERNS.EMAIL,
+                MESSAGES.VALIDATION.USER.EMAIL_INVALID,
+            ],
         },
         password: {
             type: String,
@@ -77,6 +91,16 @@ const userSchema = new mongoose.Schema(
                 default: "",
             },
         },
+        blockedUsers: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
+        isDeleted: {
+            type: Boolean,
+            default: false,
+        },
         lastActiveAt: {
             type: Date,
             default: Date.now,
@@ -91,7 +115,7 @@ const userSchema = new mongoose.Schema(
                 return ret;
             },
         },
-    }
+    },
 );
 
 userSchema.pre("save", async function () {

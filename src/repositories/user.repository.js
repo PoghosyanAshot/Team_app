@@ -1,6 +1,7 @@
 "use strict";
 
 const { User } = require("../models");
+const { USER_STATUS } = require("../constants");
 
 class UserRepository {
     static async findById(id) {
@@ -19,13 +20,17 @@ class UserRepository {
         const searchRegex = new RegExp(keyword, "i");
 
         return await User.find({
-            $or: [{ username: searchRegex }, { firstName: searchRegex }, { lastName: searchRegex }],
+            $or: [
+                { username: searchRegex },
+                { firstName: searchRegex },
+                { lastName: searchRegex },
+            ],
         }).exec();
     }
 
     static async updateById(id, data) {
         return await User.findByIdAndUpdate(id, data, {
-            new: true,
+            returnDocument: "after",
             runValidators: true,
         }).exec();
     }
@@ -44,9 +49,9 @@ class UserRepository {
             id,
             { status },
             {
-                new: true,
+                returnDocument: "after",
                 runValidators: true,
-            }
+            },
         ).exec();
     }
 
@@ -57,8 +62,45 @@ class UserRepository {
                 lastActiveAt: Date.now(),
             },
             {
-                new: true,
-            }
+                returnDocument: "after",
+            },
+        ).exec();
+    }
+
+    static async softDeleteById(id) {
+        return await User.findByIdAndUpdate(
+            id,
+            {
+                isDeleted: true,
+                status: USER_STATUS.OFFLINE,
+            },
+            {
+                returnDocument: "after",
+            },
+        ).exec();
+    }
+
+    static async blockUser(userId, targetUserId) {
+        return await User.findByIdAndUpdate(
+            userId,
+            {
+                $addToSet: { blockedUsers: targetUserId },
+            },
+            {
+                returnDocument: "after",
+            },
+        ).exec();
+    }
+
+    static async unblockUser(userId, targetUserId) {
+        return await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { blockedUsers: targetUserId },
+            },
+            {
+                returnDocument: "after",
+            },
         ).exec();
     }
 }

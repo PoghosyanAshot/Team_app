@@ -8,6 +8,7 @@ const NotFoundError = require("./NotFoundError");
 const ConflictError = require("./ConflictError");
 const ValidationError = require("./ValidationError");
 const AuthenticationError = require("./AuthenticationError");
+const ServerError = require("./ServerError");
 
 module.exports = {
     AppError,
@@ -18,4 +19,5 @@ module.exports = {
     ConflictError,
     ValidationError,
     AuthenticationError,
+    ServerError,
 };
