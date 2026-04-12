@@ -1,6 +1,6 @@
 "use strict";
 
-const { deepFreeze } = require("../utils");
+const deepFreeze = require("../utils/deepFreeze");
 
 const SOCKET_EVENTS = deepFreeze({
     // Connection

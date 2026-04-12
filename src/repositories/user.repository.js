@@ -4,22 +4,22 @@ const { User } = require("../models");
 const { USER_STATUS } = require("../constants");
 
 class UserRepository {
-    static async findById(id) {
-        return await User.findById(id).exec();
+    static findById(id) {
+        return User.findById(id).exec();
     }
 
-    static async findByIdWithPassword(id) {
-        return await User.findById(id).select("+password").exec();
+    static findByIdWithPassword(id) {
+        return User.findById(id).select("+password").exec();
     }
 
-    static async findByUsername(username) {
-        return await User.findOne({ username }).exec();
+    static findByUsername(username) {
+        return User.findOne({ username }).exec();
     }
 
-    static async searchUsers(keyword) {
+    static searchUsers(keyword) {
         const searchRegex = new RegExp(keyword, "i");
 
-        return await User.find({
+        return User.find({
             $or: [
                 { username: searchRegex },
                 { firstName: searchRegex },
@@ -28,8 +28,8 @@ class UserRepository {
         }).exec();
     }
 
-    static async updateById(id, data) {
-        return await User.findByIdAndUpdate(id, data, {
+    static updateById(id, data) {
+        return User.findByIdAndUpdate(id, data, {
             returnDocument: "after",
             runValidators: true,
         }).exec();
@@ -44,8 +44,8 @@ class UserRepository {
         return await user.save();
     }
 
-    static async updateOnlineStatus(id, status) {
-        return await User.findByIdAndUpdate(
+    static updateOnlineStatus(id, status) {
+        return User.findByIdAndUpdate(
             id,
             { status },
             {
@@ -55,8 +55,8 @@ class UserRepository {
         ).exec();
     }
 
-    static async updateLastActive(id) {
-        return await User.findByIdAndUpdate(
+    static updateLastActive(id) {
+        return User.findByIdAndUpdate(
             id,
             {
                 lastActiveAt: Date.now(),
@@ -67,8 +67,8 @@ class UserRepository {
         ).exec();
     }
 
-    static async softDeleteById(id) {
-        return await User.findByIdAndUpdate(
+    static softDeleteById(id) {
+        return User.findByIdAndUpdate(
             id,
             {
                 isDeleted: true,
@@ -80,8 +80,8 @@ class UserRepository {
         ).exec();
     }
 
-    static async blockUser(userId, targetUserId) {
-        return await User.findByIdAndUpdate(
+    static blockUser(userId, targetUserId) {
+        return User.findByIdAndUpdate(
             userId,
             {
                 $addToSet: { blockedUsers: targetUserId },
@@ -92,8 +92,8 @@ class UserRepository {
         ).exec();
     }
 
-    static async unblockUser(userId, targetUserId) {
-        return await User.findByIdAndUpdate(
+    static unblockUser(userId, targetUserId) {
+        return User.findByIdAndUpdate(
             userId,
             {
                 $pull: { blockedUsers: targetUserId },

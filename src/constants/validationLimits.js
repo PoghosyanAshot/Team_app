@@ -1,6 +1,8 @@
 "use strict";
 
-const VALIDATION_LIMITS = {
+const deepFreeze = require("../utils/deepFreeze");
+
+const VALIDATION_LIMITS = deepFreeze({
     USER: {
         NAME_MAX: 50,
         USERNAME_MIN: 3,
@@ -15,6 +17,6 @@ const VALIDATION_LIMITS = {
         NAME_MAX: 80,
         DESCRIPTION_MAX: 250,
     },
-};
+});
 
 module.exports = VALIDATION_LIMITS;

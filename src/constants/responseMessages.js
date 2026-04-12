@@ -1,6 +1,6 @@
 "use strict";
 
-const { deepFreeze } = require("../utils");
+const deepFreeze = require("../utils/deepFreeze");
 
 const MESSAGES = deepFreeze({
     // success messages
@@ -88,7 +88,8 @@ const MESSAGES = deepFreeze({
             },
             TOKEN_EXPIRED: {
                 code: "ERR_AUTH_003",
-                message: "Authentication token has expired. Please login again.",
+                message:
+                    "Authentication token has expired. Please login again.",
             },
 
             // Specific JWT error
@@ -137,6 +138,10 @@ const MESSAGES = deepFreeze({
             ALREADY_MEMBER: {
                 code: "ERR_WS_003",
                 message: "User is already a member of this workspace.",
+            },
+            ALREADY_EXISTS: {
+                code: "ERR_WS_004",
+                message: "Workspace with this slug is already exists",
             },
         },
 
@@ -194,9 +199,11 @@ const MESSAGES = deepFreeze({
             EMAIL_REQUIRED: "Email is required.",
             EMAIL_INVALID: "Please provide a valid email address.",
             PASSWORD_REQUIRED: "Password is required.",
+            ROLE_REQUIRED: "Role is required",
             PASSWORD_LENGTH: "Password must be at least 8 characters long.",
             CUSTOM_STATUS_MAX: "Status text is too long",
-            NEW_PASSWORD_SAME: "New password must be different from the old password.",
+            NEW_PASSWORD_SAME:
+                "New password must be different from the old password.",
         },
         AUTH: {
             LOGIN_EMAIL_REQUIRED: "Email is required to login.",
@@ -218,7 +225,8 @@ const MESSAGES = deepFreeze({
         MESSAGE: {
             SENDER_REQUIRED: "Message must have a sender.",
             WORKSPACE_REQUIRED: "Message must belong to a workspace.",
-            CONTENT_REQUIRED: "Message content is required if there are no attachments.",
+            CONTENT_REQUIRED:
+                "Message content is required if there are no attachments.",
             CONTENT_OR_ATTACHMENT_REQUIRED:
                 "You must provide either text content or an attachment to send a message.",
         },

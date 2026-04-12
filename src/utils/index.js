@@ -7,6 +7,7 @@ const deleteImageFromCloudinary = require("./cloudinary");
 const logger = require("./logger");
 const { successResponse, errorResponse } = require("./responseFormatter");
 const Jwt = require("./jwt");
+const generateDmRoomId = require("./generateRooms");
 
 module.exports = {
     assert,
@@ -17,4 +18,5 @@ module.exports = {
     successResponse,
     errorResponse,
     Jwt,
+    generateDmRoomId,
 };

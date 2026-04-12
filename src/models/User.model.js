@@ -68,6 +68,12 @@ const userSchema = new mongoose.Schema(
             ],
             select: false,
         },
+        role: {
+            type: String,
+            required: [true, MESSAGES.VALIDATION.USER.ROLE_REQUIRED],
+            enum: ["admin", "user"],
+            default: "user",
+        },
         avatarUrl: {
             type: String,
             default: "https://default-avatar-url.com/avatar.png",

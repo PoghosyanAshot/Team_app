@@ -1,6 +1,8 @@
 "use strict";
 
-const JOI_KEYS = {
+const deepFreeze = require("../utils/deepFreeze");
+
+const JOI_KEYS = deepFreeze({
     REQUIRED: "any.required",
     EMPTY: "string.empty",
     MIN: "string.min",
@@ -8,6 +10,6 @@ const JOI_KEYS = {
     PATTERN: "string.pattern.base",
     INVALID: "any.invalid",
     MISSING: "object.missing",
-};
+});
 
 module.exports = JOI_KEYS;

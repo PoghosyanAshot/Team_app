@@ -1,6 +1,6 @@
 "use strict";
 
-const { deepFreeze } = require("../utils");
+const deepFreeze = require("../utils/deepFreeze");
 
 const HTTP_STATUS = deepFreeze({
     // 2xx

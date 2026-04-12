@@ -10,7 +10,8 @@ const messageValidation = {
                 .pattern(REGEX_PATTERNS.OBJECT_ID)
                 .required()
                 .messages({
-                    [JOI_KEYS.REQUIRED]: MESSAGES.VALIDATION.MESSAGE.WORKSPACE_REQUIRED,
+                    [JOI_KEYS.REQUIRED]:
+                        MESSAGES.VALIDATION.MESSAGE.WORKSPACE_REQUIRED,
                     [JOI_KEYS.PATTERN]: MESSAGES.VALIDATION.GENERAL.INVALID_ID,
                 }),
             channel: Joi.string()
@@ -28,7 +29,7 @@ const messageValidation = {
                     fileType: Joi.string().required(),
                     fileName: Joi.string().required(),
                     fileSize: Joi.number().positive(),
-                })
+                }),
             ),
 
             parentMessage: Joi.string()
@@ -40,7 +41,8 @@ const messageValidation = {
         })
             .or("content", "attachments")
             .messages({
-                [JOI_KEYS.MISSING]: MESSAGES.VALIDATION.MESSAGE.CONTENT_OR_ATTACHMENT_REQUIRED,
+                [JOI_KEYS.MISSING]:
+                    MESSAGES.VALIDATION.MESSAGE.CONTENT_OR_ATTACHMENT_REQUIRED,
             }),
     },
 
@@ -58,8 +60,10 @@ const messageValidation = {
                 .trim()
                 .required()
                 .messages({
-                    [JOI_KEYS.REQUIRED]: MESSAGES.VALIDATION.MESSAGE.CONTENT_REQUIRED,
-                    [JOI_KEYS.EMPTY]: MESSAGES.VALIDATION.MESSAGE.CONTENT_REQUIRED,
+                    [JOI_KEYS.REQUIRED]:
+                        MESSAGES.VALIDATION.MESSAGE.CONTENT_REQUIRED,
+                    [JOI_KEYS.EMPTY]:
+                        MESSAGES.VALIDATION.MESSAGE.CONTENT_REQUIRED,
                 }),
         }),
     },
@@ -79,7 +83,7 @@ const messageValidation = {
     },
 
     getMessages: {
-        query: Joi.object({
+        params: Joi.object({
             channelId: Joi.string()
                 .pattern(REGEX_PATTERNS.OBJECT_ID)
                 .required()
@@ -87,6 +91,8 @@ const messageValidation = {
                     [JOI_KEYS.REQUIRED]: MESSAGES.VALIDATION.GENERAL.INVALID_ID,
                     [JOI_KEYS.PATTERN]: MESSAGES.VALIDATION.GENERAL.INVALID_ID,
                 }),
+        }),
+        query: Joi.object({
             page: Joi.number().integer().min(1).default(1),
             limit: Joi.number().integer().min(1).max(100).default(50),
         }),

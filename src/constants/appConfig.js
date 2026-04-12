@@ -1,6 +1,6 @@
 "use strict";
 
-const { deepFreeze } = require("../utils");
+const deepFreeze = require("../utils/deepFreeze");
 
 const APP_CONFIG = deepFreeze({
     PAGINATION: {
@@ -10,8 +10,17 @@ const APP_CONFIG = deepFreeze({
     },
     UPLOADS: {
         MAX_FILE_SIZE: 20 * 1024 * 1024, // 20MB
-        ALLOWED_IMAGE_TYPES: ["image/jpeg", "image/png", "image/gif", "image/webp"],
-        ALLOWED_DOC_TYPES: ["application/pdf", "application/msword", "text/plain"],
+        ALLOWED_IMAGE_TYPES: [
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/webp",
+        ],
+        ALLOWED_DOC_TYPES: [
+            "application/pdf",
+            "application/msword",
+            "text/plain",
+        ],
     },
 });
 
